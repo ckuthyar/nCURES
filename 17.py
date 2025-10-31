@@ -3,7 +3,7 @@ from docx import Document
 from docx.shared import Inches,Pt
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 
-def ding(file):
+def nCures(file):
     df1 = pd.read_excel(file, usecols='A', nrows=23)
     column1= df1.iloc[5:23, 0].tolist()
     
@@ -15,8 +15,7 @@ def ding(file):
     
     return column1,column2,column3
 
-c1,c2,c3=ding("smvitm.xlsx")
-print(c2)
+c1,c2,c3=nCures("smvitm.xlsx")
 
 
 
@@ -156,4 +155,5 @@ run=paragraph.add_run("Note: This study has certain limitations. Depending upon 
 run.font.size = Pt(8)
 
 doc.save("very_imp.docx")
-print("ggd")
+print("saved")
+
