@@ -49,8 +49,8 @@ left_cell.add_paragraph(c2[2]+str(c3[2]))
 left_cell.add_paragraph(c2[3]+str(c3[3]))
 left_cell.add_paragraph(c2[4]+str(c3[4]))
 left_cell.add_paragraph(c2[5]+str(c3[5]))
-left_cell.add_paragraph("7")
-left_cell.add_paragraph("8")
+left_cell.add_paragraph("Ejection fraction: %")
+left_cell.add_paragraph("Wall motion abnormality: Nil detected.")
 left_cell.add_paragraph("Diastolic function (assessed by online calculator using 2D, flow Doppler and tissue Doppler measurements and observations):")
 paragraph = left_cell.add_paragraph()
 run = paragraph.add_run("Right ventricles:")
@@ -156,4 +156,5 @@ run.font.size = Pt(8)
 
 doc.save("very_imp.docx")
 print("saved")
+
 
