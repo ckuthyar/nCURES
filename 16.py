@@ -13,16 +13,19 @@ def ding(file):
     df3 = pd.read_excel(file, usecols='D', nrows=23)
     column3= df3.iloc[5:23, 0].tolist()
     
-    return column1,column2,column3
+    df4 = pd.read_excel(file, usecols="B", nrows=2)
+    column4 = df4.iloc[0:2,0].tolist()
+    
+    return column1,column2,column3,column4
 
-c1,c2,c3=ding("smvitm.xlsx")
+c1,c2,c3,c4=ding("smvitm.xlsx")
 
 
 
 doc = Document()
 para=doc.add_heading("COLOR DOPPLER & 2D ECHOCARDIOGRAPHY (TRANS-THORACIC)",level = 1)
 para.paragraph_format.alignment=WD_ALIGN_PARAGRAPH.CENTER
-doc.add_paragraph("BSA: M2. BP: mmHg. Quality of acoustic window: satisfactory.")
+doc.add_paragraph(f"BSA:{c4[1]:.2f} M2. BP: mmHg. Quality of acoustic window: satisfactory.")
 
 table = doc.add_table(rows=1, cols=2)
 
