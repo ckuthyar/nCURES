@@ -18,16 +18,16 @@ import excelreader
 
 #                                     inititalising the root-window(GUI)
 root=tk.Tk()                          #initialising window object
-root.title("Excel to Word")           #window title
+root.title("nCURES-Excel to Word")           #window title
 root.geometry("1200x600")             # page length-width
 root.config(bg="white")               # page background
 
 #Intialising some basic text, to be able to change later on
 label=tk.Label(root,text="nCURES",font=("Times New Roman",25),bg="white",fg="#000000")
-label.pack(pady=100)
+label.pack(pady=80,padx=20)
 filename=tk.Label(text="")
 timelabel=tk.Label(root,text="Time",font=("Nirmala UI",10))
-details=tk.Label(text="Here is some text-details",font=("Times New Roman",12),bg="white",fg="#000000")
+details=tk.Label(text="Here is some text-details",font=("Times New Roman",15),bg="white",fg="#000000")
 #main variables
 page=1                               #current page (variable), resposible for page-display
 
@@ -62,7 +62,7 @@ button_more=tk.Button(            #Web Button
 )
 button_echo=tk.Button(               #next page(page2)
     root,
-    text="OPTION C", #Echocardiography Report
+    text="Echocardiography Report", #Echocardiography Report
     padx=20,
     pady=2,
     font=("Gadugi",15),
@@ -71,7 +71,7 @@ button_echo=tk.Button(               #next page(page2)
 )
 button_obs=tk.Button(               #next page(page-6)
     root,
-    text="OPTION B", #Obstetric Ultrasound Report
+    text="Obstetric Ultrasound Report", #Obstetric Ultrasound Report
     padx=12,
     pady=2,
     font=("Gadugi",15),
@@ -80,9 +80,9 @@ button_obs=tk.Button(               #next page(page-6)
 )
 button_ni=tk.Button(               #next page(page-7)
     root,
-    text="OPTION A", #NeuroImaging Report
+    text="NeuroImaging Report", #NeuroImaging Report
     padx=27,
-    pady=2,
+    pady=6,
     font=("Gadugi",15),
     fg="#FFFFFF",
     bg="#1C1C1C",
@@ -135,9 +135,32 @@ def update_page():                                            #updates pages
         button_more.place_forget()
         button_ni.place_forget()
         button_obs.place_forget()
-        label.config(text="This is Detail Page")
-        details.config(text="This is some more details for the more page, will be replaced later on.")
-        details.place(relx=0.40, rely=0.40, anchor="se")
+        label.config(text="Info:")
+        
+        
+        details.config(text="""Utility Details
+
+Utility Name: nCURES- Excel to Word Converter
+
+Purpose:
+This utility is designed to automate the conversion of Excel files (.xlsx)
+ into structured Word documents (.docx). It provides a simple
+efficient interface to extract, format, and export data, 
+minimizing manual effort and ensuring consistency in reports or documentation.
+
+Developers:
+
+Team Lead:  Chandrashekhar Rao Kuthyar
+
+Python Backend (Data Processing): Dhyan Kulal
+
+Python Backend (File Operations): Ranjan Shetty
+
+Python GUI (Tkinter Interface): Aditya Nayak
+                       
+
+                       For any doubts, contact ncures@googlegroups.com""")
+        details.place(relx=0.8, rely=0.90, anchor="se")
         button_prv.place(relx=0.05,rely=0.90,anchor="sw")
 
     if page==1:                               #page1, default page
@@ -161,10 +184,13 @@ def update_page():                                            #updates pages
         
     
     if page==2:                                 #page2, conversion page
-        label.config(text="This is Page2")
+        label.config(text="""Excel to Docs Converter
+    ~Echocardiography~""")
         label.pack()
-        filename.config(text="No File Selected",font=("Times New Roman",20),bg="white")
-        filename.place(rely=0.50,relx=0.40)
+        filename.config(text="""Please upload the Excel file you wish to convert.
+(Tip: Ensure the Excel file is saved and closed before starting the
+                conversion to avoid file access errors.)""",font=("Times New Roman",20),bg="white")
+        filename.place(rely=0.50,relx=0.20)
         button_select.place(relx=0.95,rely=0.90,anchor="se")
         button_prv.place(relx=0.05,rely=0.90,anchor="sw")
         button_echo.place_forget()
@@ -187,7 +213,12 @@ def update_page():                                            #updates pages
         button_more.place_forget()
         button_ni.place_forget()
         button_obs.place_forget()
-        label.config(text="Under Construction")
+        label.config(text="""This section is currently under development.
+It will be used for NeuroImaging Report and Obstetric Ultrasound Report features, 
+                which are planned for future updates.
+These options are being designed for upcoming iterations of this product.
+
+Please click “Previous” to return to the home screen.""",font=("Times New Roman",20))
         button_prv.place(relx=0.05,rely=0.90,anchor="sw")
 
 def open_doc(file_path):
