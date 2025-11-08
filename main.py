@@ -13,8 +13,10 @@
 from time import strftime
 import os
 import tkinter as tk                  #import GUI module
-from tkinter import filedialog        # to bring the file-opening possibilities
-import excelreader
+from tkinter import filedialog,ttk        # to bring the file-opening possibilities
+import verify 
+import converter
+
 
 #                                     inititalising the root-window(GUI)
 root=tk.Tk()                          #initialising window object
@@ -30,12 +32,14 @@ timelabel=tk.Label(root,text="Time",font=("Nirmala UI",10))
 details=tk.Label(text="Here is some text-details",font=("Times New Roman",15),bg="white",fg="#000000")
 #main variables
 page=1                               #current page (variable), resposible for page-display
-
-
-
+history1=tk.Label(root,text="c",font=("Times New Roman",8))
+trademark=tk.Label(root,text="nCURES",font=("Impact",20),bg="white",fg="#000000")
+trademark.place(relx=0.05,rely=0.01,anchor="n")
+frame=ttk.Frame(root)
+text = tk.Text(frame, wrap="word", height=15, width=80)
 button_convert=tk.Button(            #Convert Button
     root,
-    text="",
+    text="Select File",
     padx=20,
     pady=12,
     font=("Century Gothic",10),
@@ -51,7 +55,7 @@ button_prv=tk.Button(            #previous page(page1)
     fg="#FFFFFF",
     bg="#000000",
 )
-button_more=tk.Button(            #Web Button
+button_more=tk.Button(            #more Button
     root,
     text="DETAILS",
     padx=20,
@@ -59,6 +63,15 @@ button_more=tk.Button(            #Web Button
     font=("Century Gothic",10),
     fg="#000000",
     bg="#EEC477",
+)
+button_history=tk.Button(            #Web Button
+    root,
+    text="HISTORY",
+    padx=20,
+    pady=12,
+    font=("Century Gothic",10),
+    fg="#000000",
+    bg="#0AFF54",
 )
 button_echo=tk.Button(               #next page(page2)
     root,
@@ -98,7 +111,7 @@ button_select=tk.Button(               #button to convert to word
 )
 button_proceed=tk.Button(               #button to convert to word
     root,
-    text="CONVERT ",
+    text="Proceed",
     padx=5,
     pady=2,
     font=("Nirmala UI",12),
@@ -129,13 +142,41 @@ button_open=tk.Button(               #button to convert to word
 
 def update_page():                                            #updates pages
     global page                                               #page variable
+    if page==6:                   # history
+        button_echo.place_forget()
+        button_more.place_forget()
+        button_ni.place_forget()
+        button_obs.place_forget()
+        button_history.place_forget()
+        label.place_forget()
+        
+        frame.place(relx=0.40,rely=0.30,anchor="n")
+        with open("history.txt", "r") as file:
+             content = file.read()
+        
+        text.insert("1.0", content)
+        text.config(state="disabled")  # make it read-only
+        text.grid(row=0, column=0, sticky="nsew")
+        #erase prev
+        button_prv.place(relx=0.05,rely=0.90,anchor="sw")
+        
+        with open("history.txt", "r") as file:
+             content = file.read()
+
+        
+        #content=str(content)
+        #history1.config(text=f"{content}")
+        #history1.place(rely=0.40,relx=0.4)
 
     if page==0:  #details page
         button_echo.place_forget()
         button_more.place_forget()
         button_ni.place_forget()
         button_obs.place_forget()
-        label.config(text="Info:")
+        button_history.place_forget()
+        frame.place_forget()
+        text.place_forget()
+        label.place_forget()
         
         
         details.config(text="""Utility Details
@@ -159,11 +200,13 @@ Python Backend (File Operations): Ranjan Shetty
 Python GUI (Tkinter Interface): Aditya Nayak
                        
 
-                       For any doubts, contact ncures@googlegroups.com""")
+                    For any doubts, contact ncures@googlegroups.com        """)
         details.place(relx=0.8, rely=0.90, anchor="se")
         button_prv.place(relx=0.05,rely=0.90,anchor="sw")
 
-    if page==1:                               #page1, default page
+    if page==1:           #page1, default page
+        frame.place_forget()
+        text.place_forget() 
         button_prv.place_forget()
         details.place_forget()
         button_select.place_forget() 
@@ -171,47 +214,58 @@ Python GUI (Tkinter Interface): Aditya Nayak
         button_home.place_forget()
         button_proceed.place_forget()
         button_open.place_forget()
+        history1.place_forget()
+        
         timelabel.place(relx=0.99,rely=0.01,anchor="ne")
         label.config(text="""
-        Hello World
-                This is page1
+        Welcome to Excel-Docs Converter
+Your personal and reliable tool for converting Excel sheets 
+                     into Word documents — quickly and effortlessly.
         """)
-        label.place(relx=0.20,rely=0.10)
+        label.place(relx=0.18,rely=0.50,anchor="sw")
         button_more.place(relx=0.05,rely=0.90,anchor="sw")
         button_echo.place(relx=0.95,rely=0.90,anchor="se")
         button_ni.place(relx=0.95,rely=0.80,anchor="se")
         button_obs.place(relx=0.95,rely=0.70,anchor="se")
+        button_history.place(relx=0.05,rely=0.80,anchor="sw")
         
     
     if page==2:                                 #page2, conversion page
         label.config(text="""Excel to Docs Converter
     ~Echocardiography~""")
-        label.pack()
+        label.place(relx=0.37,rely=0.20,anchor="nw")
         filename.config(text="""Please upload the Excel file you wish to convert.
 (Tip: Ensure the Excel file is saved and closed before starting the
-                conversion to avoid file access errors.)""",font=("Times New Roman",20),bg="white")
-        filename.place(rely=0.50,relx=0.20)
+                conversion to avoid file access errors.)""",font=("Times New Roman",17),bg="white")
+        filename.place(rely=0.50,relx=0.30,anchor="sw")
         button_select.place(relx=0.95,rely=0.90,anchor="se")
         button_prv.place(relx=0.05,rely=0.90,anchor="sw")
         button_echo.place_forget()
         button_more.place_forget()
         button_ni.place_forget()
         button_obs.place_forget()
+        button_history.place_forget()
         
     if page==3:                                   # final page, page3
         button_proceed.place_forget()
         button_select.place_forget()
         filename.place_forget()
-        label.config(text="This is Page3")
-        label.pack()
+      
+        label.config(text="""Your file is ready for download.
+The conversion has been completed successfully. 
+                     Please click “Open Document” to view your Word file.
+If you’d like to go back and convert another file,
+                      click “Previous” to return to the previous screen.""")
+        label.place(relx=0.45,rely=0.40,anchor="n")
         button_open.place(relx=0.90,rely=0.90,anchor="se")
-        button_open.place(relx=0.90,rely=0.90,anchor="se")
+        #button_open.place(relx=0.90,rely=0.90,anchor="se")
         
         button_home.place(relx=0.05,rely=0.95,anchor="sw")
     if page==5:
         button_echo.place_forget()
         button_more.place_forget()
         button_ni.place_forget()
+        button_history.place_forget()
         button_obs.place_forget()
         label.config(text="""This section is currently under development.
 It will be used for NeuroImaging Report and Obstetric Ultrasound Report features, 
@@ -258,22 +312,49 @@ def select():                          #Pending
         button_prv.place_forget()
         button_select.place_forget()
         filename.config(text=f"File Selected:{file_name} ✅")
-        button_proceed.place(relx=0.90,rely=0.90,anchor="se")
-        doc_name=excelreader.reader(file_path)
-        print(doc_name)
-        update_time()
-        button_open.config(command=lambda:open_doc(doc_name))
+        
+        # doc_name=excelreader.reader(file_path)
+
+        val=verify.isempty(file_path)
+        if val==2:
+            button_select.place_forget()
+            doc_name=converter.reader(file_path)
+            print(doc_name)
+            update_time()
+            button_open.config(command=lambda:open_doc(doc_name))
+            button_proceed.place(relx=0.90,rely=0.90,anchor="se")
+        elif val==1:
+            filename.config(text="Please Choose Another file. This one seems to be incorrect.")
+            button_select.place(relx=0.95,rely=0.90,anchor="se")
+        else: 
+            filename.config("ERROR: PLEASE CONTACT DEVELOPER")
+        val=verify.isempty(file_path)
+        if val==2:
+            button_select.place_forget()
+            doc_name=converter.reader(file_path)
+            print(doc_name)
+            update_time()
+            button_open.config(command=lambda:open_doc(doc_name))
+            button_proceed.place(relx=0.90,rely=0.90,anchor="se")
+        elif val==1:
+            filename.config(text="""The selected file does not contain a valid BSA value..Please Choose Another file.""")
+            button_select.place(relx=0.95,rely=0.90,anchor="se")
+        else: 
+            filename.config("ERROR: PLEASE CONTACT DEVELOPER")
         
         
 def update_time():
-    current_time = strftime("%H:%M:%S %p")  # Format like 14:35:22 PM
+    current_time = strftime("%H:%M:%S %p")  # Format like HH:MM:SS PM
     timelabel.config(text=current_time)
-    timelabel.after(1000, update_time)  # Update every 1 second
+    timelabel.after(500, update_time)  # Update every 1 second
 
 
 
-def web_more():
+def history():
     print("Coming Soon")             # pending
+    global page
+    page=6
+    update_page()
 
 #button functions-command bridge
 button_echo.config(command=next_page)        # command to move to the next page
@@ -284,7 +365,7 @@ button_home.config(command=home)             # return home
 button_obs.config(command=obs_page)           # to-do obs page
 button_ni.config(command=obs_page)
 button_more.config(command=morepage)
-
+button_history.config(command=history)
 #final running
 update_time()                           # Start the clock
 update_page()                           # update page

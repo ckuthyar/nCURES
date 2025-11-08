@@ -152,14 +152,21 @@ def reader(file):
     paragraph=doc.add_paragraph()
     run=paragraph.add_run("Note: This study has certain limitations. Depending upon the clinical requirement, further evaluation or follow up may be required, to confirm above findings and to look for abnormalities if any which would have gone undetected in this study.")
     run.font.size = Pt(8)
+
+    #docx ends backend starts
+    from datetime import datetime
+    now=datetime.now()
+    saved_datetime=now.strftime("%d-%m-%Y  %I:%M %S %p")
     filename=str(file)
     filename=filename.split(".")
     filename=filename[0]
     name=f"{filename}"+".docx"
     doc.save(rf"{name}")
     with open("history.txt","a")as f:
-        f.write(rf"{name}")
-        f.write("\n")
+        f.write(f" \n {name} || {saved_datetime} || \n")
+        
+        
     print("Successully saved")
+    return name
 
-reader("testing.xlsx")
+
